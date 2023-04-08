@@ -1,0 +1,120 @@
+{% extends 'list.html' %}
+{% load static %}
+
+    {% block buscar %}
+        <form action="" method="GET">
+          <div class="input-group btn-group-sm ">
+            <input class="form-control" type="text" name="query" value="{{ query }}" placeholder="Buscar... por nombre" id="idInputSearch" aria-describedby="basic-addon2"/>
+            <button type="submit" class="btn btn-primary" id="idSearchSp"><span style="font-size:20px ">🔎</span></button>
+          </div>
+      </form>
+    {% endblock %}
+
+    {% block columns %}
+        <tr>
+          <th>descripcion</th>
+           <th>estado</th>
+           <th>Acciones</th>
+        </tr>
+    {% endblock %}
+
+    {% block rows %}
+      {% for ciudad in ciudades %}
+        <tr>
+           <td>{{ciudad.descripcion}}</td>
+           <td>{% if ciudad.estado %}
+                 Activo
+               {% else %}
+                 Cancelado  
+               {% endif %}
+           </td>
+           <td>
+             <button type="button" class="btn btn-link"
+                onclick="mostrarModal({{ ciudad.pk }})">👁️👁️</button>
+              <a href="{% url 'editar_ciudad' ciudad.id %}">📝</a>
+              <a href="{% url 'eliminar_ciudad' ciudad.id %}">❌</a>
+
+           </td>
+        </tr>
+        {% block modal %}
+           <div class="modal fade" id="ciudadModal{{ ciudad.pk }}" tabindex="-1" role="dialog" aria-labelledby="ciudadModalLabel{{ ciudad.pk }}" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header bg-secondary">
+                    <h5 class="modal-title text-white " id="ciudadModalLabel{{ ciudad.pk }}">Datos de la Ciudad</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body" id="body">
+                     <div class="d-flex justify-content-center">
+                       <div class="datos"> 
+                       <p>{{ciudad.descripcion}}</p>
+                       <p>{% if ciudad.estado %}
+                             Activo
+                           {% else %}
+                             Cancelado
+                           {% endif %}
+                       </p>
+                      </div>
+                     </div>
+                  </div>
+                  <div class="modal-footer  text-white">
+                    <button type="button" class="btn btn-success btn-block text-center" data-dismiss="modal">Close</button>
+
+                  </div>
+                </div>
+              </div>
+           </div>
+         {% endblock %}
+      {% endfor %}
+    {% endblock %}
+
+    {% block pagineo %}
+      <nav aria-label="Page navigation example" style="margin-top: -2.5rem">
+        <ul class="pagination justify-content-center mt-5">
+
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                            </li>
+                        {% endif %}
+
+                        {% for i in page_obj.paginator.page_range %}
+
+                            {% if i == page_obj.number %}
+                                <li class="page-item active">
+                                    <a class="page-link" href="#">{{ i }}</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                                </li>
+                            {% endif %}
+
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                            </li>
+                        {% endif %}
+
+                    </ul>
+      </nav>
+    {% endblock %}
+
+    {% block botones_pie %}
+       <a class="btn btn-danger" href="{% url 'crear_ciudad' %}">Nuevo Registro</a>
+    {% endblock %}
+
+
+
+{% block js %}
+   <script>
+     function mostrarModal(pk) {
+       console.log('#ciudadModal' + pk);
+       $('#ciudadModal' + pk).modal('show');
+     }
+   </script>
+{% endblock %}

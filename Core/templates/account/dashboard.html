@@ -1,0 +1,38 @@
+{% load static %}
+{% if request.user.is_authenticated %}
+   <html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOME</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}">
+</head>
+<body class="body-dashboard">
+    <div class="contenedor">
+
+        <div class="bloque">
+            <div class="iconos">
+                <a href="{% url 'principal' %}">
+                    <img src="{% static 'img/cash-payment.jpg' %}" alt="img">
+                </a>
+                <h2><br>INICIO</h2>
+                <p><br> Cuentas por Cobrar
+                    Registro de Clientes
+                </p>
+            </div>
+        </div>
+        <div class="bloque">
+            <div class="iconos">
+                <a href="{% url 'login' %}">
+                    <img src="{% static 'img/salir.png' %}" alt="img">
+                </a>
+                <h2><br>CERRAR SESION</h2>
+                <p>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endif %}

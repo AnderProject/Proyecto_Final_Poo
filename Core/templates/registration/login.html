@@ -1,0 +1,27 @@
+{% load static %}
+{% if form.errors %}
+    <p>Tu nombre de usuario y contrasena no coinciden</p>
+{% else %}
+
+{% endif %}
+<title>INICIO SESION</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<body>
+    <header>
+        <h1>INICIO DE SESIÓN</h1>
+    </header>
+    <main>
+        <form id="login_form" class="form_class" action="{% url 'login' %}" method="post">
+            {{ form.as_p }}{% csrf_token %}
+            <div class="form_div">
+                <button class="submit_class" type="submit" form="login_form" onclick="return validarLogin()">Entrar</button>
+            </div>
+            <div class="info_div">
+                <p>¿No te has registrado? <a href="/admin/auth/user/add">Registrate Aquí</a></p>
+            </div>
+        </form>
+    </main>
+    <footer>
+        <p>PROYECTO FINAL <a href="#">POO</a></p>
+    </footer>
+</body>
